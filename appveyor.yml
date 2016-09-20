@@ -11,16 +11,24 @@ environment:
     # The list here is complete (excluding Python 2.6, which
     # isn't covered by this document) at the time of writing.
 
-    # PYTHON: "C:\\Python27"
+    # - PYTHON: "C:\\Python27"
+    #   GENERATOR: "Visual Studio 9 2008"
     # - PYTHON: "C:\\Python33"
+    #   GENERATOR: "Visual Studio 9 2008"
     # - PYTHON: "C:\\Python34"
+    #   GENERATOR: "Visual Studio 10 2010"
     - PYTHON: "C:\\Python35"
-    # PYTHON: "C:\\Python27-x64"
+      GENERATOR: "Visual Studio 14 2015"
+    # - PYTHON: "C:\\Python27-x64"
+    #   GENERATOR: "Visual Studio 9 2008 Win64"
     # - PYTHON: "C:\\Python33-x64"
+    #   GENERATOR: "Visual Studio 9 2008 Win64"
     #   DISTUTILS_USE_SDK: "1"
     # - PYTHON: "C:\\Python34-x64"
+    #   GENERATOR: "Visual Studio 10 2010 Win64"
     #   DISTUTILS_USE_SDK: "1"
-    # - PYTHON: "C:\\Python35-x64"
+    - PYTHON: "C:\\Python35-x64"
+      GENERATOR: "Visual Studio 14 2015 Win64"
 
 install:
   # We need wheel installed to build wheels
@@ -31,7 +39,7 @@ install:
   - git checkout 1.0.0
   - ps: mkdir build
   - ps: cd build
-  - cmake -DNN_STATIC_LIB=ON ..
+  - cmake -DNN_STATIC_LIB=ON  -G"%GENERATOR%" ..
   - cmake --build .
   - cmake --build . --target install
   - ps: cp Debug\nanomsg.lib ..\..
