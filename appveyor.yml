@@ -25,20 +25,18 @@ environment:
 install:
   # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install wheel"
-  - pwd
   - git clone https://github.com/nanomsg/nanomsg.git nanomsg-src
-  - pushd nanomsg-src
+  - ps: pushd nanomsg-src
   - git checkout 1.0.0
-  - mkdir build
-  - cd build
+  - ps: mkdir build
+  - ps: cd build
   - cmake -DNN_STATIC_LIB=ON ..
   - cmake --build .
   - cmake --build . --target install
-  - pwd
-  - popd
-  - pwd
+  - ps: popd
 
-build: off
+build_script:
+  - "%PYTHON%\\python.exe setup.py install"
 
 test_script:
   # Put your test command here.
