@@ -11,35 +11,40 @@ environment:
     # The list here is complete (excluding Python 2.6, which
     # isn't covered by this document) at the time of writing.
 
-    # - PYTHON: "C:\\Python27"
-    #   GENERATOR: "Visual Studio 9 2008"
+    - PYTHON: "C:\\Python27"
+      CMAKE_GENERATOR: "Visual Studio 9 2008"
     # - PYTHON: "C:\\Python33"
-    #   GENERATOR: "Visual Studio 9 2008"
+    #   CMAKE_GENERATOR: "Visual Studio 9 2008"
     # - PYTHON: "C:\\Python34"
-    #   GENERATOR: "Visual Studio 10 2010"
+    #   CMAKE_GENERATOR: "Visual Studio 10 2010"
     - PYTHON: "C:\\Python35"
-      GENERATOR: "Visual Studio 14 2015"
+      CMAKE_GENERATOR: "Visual Studio 14 2015"
     # - PYTHON: "C:\\Python27-x64"
-    #   GENERATOR: "Visual Studio 9 2008 Win64"
+    # - CMAKE_GENERATOR: "Visual Studio 9 2008 Win64"
     # - PYTHON: "C:\\Python33-x64"
-    #   GENERATOR: "Visual Studio 9 2008 Win64"
+    #   CMAKE_GENERATOR: "Visual Studio 9 2008 Win64"
     #   DISTUTILS_USE_SDK: "1"
     # - PYTHON: "C:\\Python34-x64"
-    #   GENERATOR: "Visual Studio 10 2010 Win64"
+    #   CMAKE_GENERATOR: "Visual Studio 10 2010 Win64"
     #   DISTUTILS_USE_SDK: "1"
     - PYTHON: "C:\\Python35-x64"
-      GENERATOR: "Visual Studio 14 2015 Win64"
+      CMAKE_GENERATOR: "Visual Studio 14 2015 Win64"
 
 install:
   # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install wheel"
+  # Visual Studio 9 2008 does not come with stdint.h, so we'll copy over a
+  # different version.  We only need to do it whenever we're building with
+  # 2008, but it doesn't hurt to copy it unconditionally.
+  - ps: cp "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include\\stdint.h" \
+           "C:\\Program Files (x86)\\Microsoft Visual Studio 9.0\\VC\\include\\stdint.h"
   - git clone https://github.com/nanomsg/nanomsg.git nanomsg-src
   - pwd
   - ps: pushd nanomsg-src
   - git checkout 1.0.0
   - ps: mkdir build
   - ps: cd build
-  - cmake -DNN_STATIC_LIB=ON  -G"%GENERATOR%" ..
+  - cmake -DNN_STATIC_LIB=ON  -G"%CMAKE_GENERATOR%" ..
   - cmake --build .
   - cmake --build . --target install
   - ps: cp Debug\nanomsg.lib ..\..
