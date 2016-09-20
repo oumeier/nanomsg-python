@@ -45,9 +45,9 @@ if sys.platform in ("win32", "cygwin"):
     # nanomsg installs to different directory based on architecture
     arch = platform.architecture()[0]
     if arch == "64bit":
-        include_dirs=[r'C:\Program Files (x86)\nanomsg\include',]
-    else:
         include_dirs=[r'C:\Program Files\nanomsg\include',]
+    else:
+        include_dirs=[r'C:\Program Files (x86)\nanomsg\include',]
 else:
     include_dirs = None
 try:
