@@ -26,8 +26,6 @@
 #ifdef IS_PY3K
 #define Py_TPFLAGS_HAVE_CLASS     0L
 #define Py_TPFLAGS_HAVE_NEWBUFFER 0L
-#else
-#define Py_ssize_t size_t
 #endif
 
 const static char MODULE_NAME[] = "_nanomsg_cpy";
@@ -398,12 +396,13 @@ _nanomsg_cpy_nn_poll(PyObject *self, PyObject *args)
         return NULL;
     }
 
-    sockets = PyDict_New();   
+    sockets = PyDict_New();
     socket_count = PyDict_Size(socket_event_dict);
     fds = malloc(sizeof(struct nn_pollfd)*socket_count);
 
     // build up fds array
-    Py_ssize_t pos = 0;
+    Py_ssize_t pos;
+    pos = 0;
     int i = 0;
     PyObject *key, *value;
     while (PyDict_Next(socket_event_dict, &pos, &key, &value)) {
