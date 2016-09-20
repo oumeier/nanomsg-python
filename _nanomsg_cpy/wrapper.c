@@ -393,7 +393,9 @@ _nanomsg_cpy_nn_poll(PyObject *self, PyObject *args)
     struct nn_pollfd *fds;
     Py_ssize_t pos;
     int i;
-
+    PyObject *key, *value;
+    PyObject *code;
+    PyObject *result;
     if (!PyArg_ParseTuple(args, "O!i", &PyDict_Type, &socket_event_dict, &timeout_ms)) {
         return NULL;
     }
@@ -405,7 +407,6 @@ _nanomsg_cpy_nn_poll(PyObject *self, PyObject *args)
     // build up fds array
     pos = 0;
     i = 0;
-    PyObject *key, *value;
     while (PyDict_Next(socket_event_dict, &pos, &key, &value)) {
         fds[i].fd = (int)PyLong_AsLong(key);
         fds[i].events = (short)PyLong_AsLong(value);
@@ -428,8 +429,8 @@ _nanomsg_cpy_nn_poll(PyObject *self, PyObject *args)
 
     free(fds);
 
-    PyObject *code = PyLong_FromUnsignedLong(res);
-    PyObject *result = PyTuple_Pack(2, code, sockets);
+    code = PyLong_FromUnsignedLong(res);
+    result = PyTuple_Pack(2, code, sockets);
 
     return result;
 }
