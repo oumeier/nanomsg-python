@@ -35,9 +35,12 @@ install:
   - "%PYTHON%\\python.exe -m pip install wheel"
   # Visual Studio 9 2008 does not come with stdint.h, so we'll copy over a
   # different version.  We only need to do it whenever we're building with
-  # 2008, but it doesn't hurt to copy it unconditionally.
+  # 2008, but it doesn't hurt to copy it unconditionally.  The first copy is to
+  # build nanomsg, the second is to build the extension.
   - ps: cp "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\include\\stdint.h"
            "C:\\Program Files (x86)\\Microsoft Visual Studio 9.0\\VC\\include\\stdint.h"
+  - ps: cp "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\include\\stdint.h"
+           "C:\\Users\\appveyor\\AppData\\Local\\Programs\\Common\\Microsoft\\Visual C++ for Python\\9.0\\VC\include\\stdint.h"
   - git clone https://github.com/nanomsg/nanomsg.git nanomsg-src
   - pwd
   - ps: pushd nanomsg-src
