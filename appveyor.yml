@@ -11,11 +11,11 @@ environment:
     # The list here is complete (excluding Python 2.6, which
     # isn't covered by this document) at the time of writing.
 
-    - PYTHON: "C:\\Python27"
+    # PYTHON: "C:\\Python27"
     # - PYTHON: "C:\\Python33"
     # - PYTHON: "C:\\Python34"
     - PYTHON: "C:\\Python35"
-    - PYTHON: "C:\\Python27-x64"
+    # PYTHON: "C:\\Python27-x64"
     # - PYTHON: "C:\\Python33-x64"
     #   DISTUTILS_USE_SDK: "1"
     # - PYTHON: "C:\\Python34-x64"
@@ -26,6 +26,7 @@ install:
   # We need wheel installed to build wheels
   - "%PYTHON%\\python.exe -m pip install wheel"
   - git clone https://github.com/nanomsg/nanomsg.git nanomsg-src
+  - pwd
   - ps: pushd nanomsg-src
   - git checkout 1.0.0
   - ps: mkdir build
@@ -33,7 +34,9 @@ install:
   - cmake -DNN_STATIC_LIB=ON ..
   - cmake --build .
   - cmake --build . --target install
+  - ps: cp Debug\nanomsg.lib ..\..
   - ps: popd
+  - pwd
 
 build_script:
   - "%PYTHON%\\python.exe setup.py install"
