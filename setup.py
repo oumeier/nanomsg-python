@@ -2,6 +2,7 @@ from __future__ import division, absolute_import, print_function,\
  unicode_literals
 
 import os
+import platform
 import sys
 try:
     from setuptools import setup
@@ -38,9 +39,15 @@ class skippable_build_ext(build_ext):
             print()
 
 libraries = [str('nanomsg')]
+# add additional necessary library/include path info if we're on Windows
 if sys.platform in ("win32", "cygwin"):
     libraries.extend([str('ws2_32'), str('advapi32'), str('mswsock')])
-    include_dirs=[r'C:\Program Files (x86)\nanomsg\include',]
+    # nanomsg installs to different directory based on architecture
+    arch = platform.architecture()[0]
+    if arch == "64bit":
+        include_dirs=[r'C:\Program Files (x86)\nanomsg\include',]
+    else:
+        include_dirs=[r'C:\Program Files\nanomsg\include',]
 else:
     include_dirs = None
 try:
