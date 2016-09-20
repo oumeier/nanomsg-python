@@ -391,6 +391,8 @@ _nanomsg_cpy_nn_poll(PyObject *self, PyObject *args)
     PyObject *socket_event_dict, *sockets;
     Py_ssize_t socket_count;
     struct nn_pollfd *fds;
+    Py_ssize_t pos;
+    int i;
 
     if (!PyArg_ParseTuple(args, "O!i", &PyDict_Type, &socket_event_dict, &timeout_ms)) {
         return NULL;
@@ -401,9 +403,8 @@ _nanomsg_cpy_nn_poll(PyObject *self, PyObject *args)
     fds = malloc(sizeof(struct nn_pollfd)*socket_count);
 
     // build up fds array
-    Py_ssize_t pos;
     pos = 0;
-    int i = 0;
+    i = 0;
     PyObject *key, *value;
     while (PyDict_Next(socket_event_dict, &pos, &key, &value)) {
         fds[i].fd = (int)PyLong_AsLong(key);
