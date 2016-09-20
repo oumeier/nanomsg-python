@@ -26,6 +26,8 @@
 #ifdef IS_PY3K
 #define Py_TPFLAGS_HAVE_CLASS     0L
 #define Py_TPFLAGS_HAVE_NEWBUFFER 0L
+#else
+#define Py_ssize_t size_t
 #endif
 
 const static char MODULE_NAME[] = "_nanomsg_cpy";
