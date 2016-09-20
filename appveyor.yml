@@ -36,7 +36,7 @@ install:
   # Visual Studio 9 2008 does not come with stdint.h, so we'll copy over a
   # different version.  We only need to do it whenever we're building with
   # 2008, but it doesn't hurt to copy it unconditionally.
-  - ps: cp "C:\\Program Files (x86)\\Microsoft Visual Studio 14.0\\VC\\include\\stdint.h"
+  - ps: cp "C:\\Program Files (x86)\\Microsoft Visual Studio 10.0\\VC\\include\\stdint.h"
            "C:\\Program Files (x86)\\Microsoft Visual Studio 9.0\\VC\\include\\stdint.h"
   - git clone https://github.com/nanomsg/nanomsg.git nanomsg-src
   - pwd
